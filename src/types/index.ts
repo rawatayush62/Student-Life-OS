@@ -145,3 +145,82 @@ export interface AIRecommendation {
   urgency: 'critical' | 'high' | 'info';
   actionType: 'start_focus' | 'open_free_time' | 'open_check_in' | 'open_brain_dump';
 }
+
+// ──┠Streak & XP System ──────────────────────────────────────────────────────┊
+export interface StreakData {
+  checkInStreak: number;        // consecutive days with a check-in
+  focusStreak: number;          // consecutive days with a focus session
+  taskStreak: number;           // consecutive days completing at least 1 task
+  lastCheckInDate: string;      // YYYY-MM-DD
+  lastFocusDate: string;        // YYYY-MM-DD
+  lastTaskDate: string;         // YYYY-MM-DD
+  longestCheckInStreak: number;
+  longestFocusStreak: number;
+}
+
+export interface XPData {
+  totalXP: number;
+  weeklyXP: number;
+  weekStart: string;            // YYYY-MM-DD (Monday of current week)
+  pillarXP: Record<LifePillar, number>;
+  level: number;                // derived from totalXP
+  xpToNextLevel: number;
+}
+
+export type AchievementId =
+  | 'first_checkin'
+  | 'first_focus'
+  | 'first_task'
+  | 'streak_3'
+  | 'streak_7'
+  | 'streak_14'
+  | 'balanced_week'
+  | 'social_butterfly'
+  | 'focus_warrior'
+  | 'pillar_master_learn'
+  | 'pillar_master_move'
+  | 'pillar_master_connect'
+  | 'night_owl'
+  | 'early_bird'
+  | 'xp_100'
+  | 'xp_500'
+  | 'xp_1000';
+
+export interface Achievement {
+  id: AchievementId;
+  title: string;
+  description: string;
+  emoji: string;
+  xpReward: number;
+  unlockedAt?: string;         // ISO datetime if unlocked
+  unlocked: boolean;
+}
+
+// ──┠Side Quest System ───────────────────────────────────────────────────────┊
+export interface SideQuest {
+  id: string;
+  pillar: LifePillar;
+  title: string;
+  description: string;
+  emoji: string;
+  xpReward: number;
+  completedAt?: string;
+  completed: boolean;
+  expiresAt: string;            // YYYY-MM-DD †quests reset daily
+}
+
+// ──┠Weekly Review ───────────────────────────────────────────────────────────┊
+export interface WeeklyReview {
+  weekStart: string;            // YYYY-MM-DD (Monday)
+  weekEnd: string;              // YYYY-MM-DD (Sunday)
+  pillarHours: Record<LifePillar, number>;
+  tasksCompleted: number;
+  focusMinutes: number;
+  checkInsCompleted: number;
+  xpEarned: number;
+  balanceScore: number;
+  headline: string;
+  aiMessage: string;
+  topPillar: LifePillar;
+  neglectedPillar: LifePillar;
+}
